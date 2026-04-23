@@ -1,6 +1,6 @@
 // Core42 — Resources Directory v3
-// Same composition as v2 (Blog hero + directory tabs) but with an icon-only collapsed side rail.
-// Rail is 72px wide (vs 240). We override the hardcoded marginLeft/left: 240 values inside a scoped wrapper.
+// Blog hero + directory tabs. (Previously had a collapsed 72px rail; that rail
+// was removed along with all other sidebars, so this now renders full-width.)
 
 const DirectoryPageV3 = () => {
   const [tab, setTab] = React.useState("blogs");
@@ -26,27 +26,8 @@ const DirectoryPageV3 = () => {
 
   React.useEffect(() => { setTopic("All"); }, [tab]);
 
-  // Override every section's marginLeft/left: 240 → 72 inside this page only.
-  const overrideCSS = `
-    .c42-rail-collapsed section[style*="margin-left: 240px"],
-    .c42-rail-collapsed section[style*="margin-left:240px"] {
-      margin-left: 72px !important;
-    }
-    .c42-rail-collapsed div[style*="left: 240px"],
-    .c42-rail-collapsed div[style*="left:240px"] {
-      left: 72px !important;
-    }
-    .c42-rail-collapsed .c42-topbar {
-      left: 72px !important;
-    }
-    .c42-rail-collapsed footer[style*="padding: 100px 97px 40px"] {
-      padding-left: 72px !important;
-    }
-  `;
-
   return (
-    <div className="c42-scope c42-rail-collapsed" style={{ position: "relative", background: "var(--c42-paper)", width: 1920, minHeight: 3000 }}>
-      <style>{overrideCSS}</style>
+    <div className="c42-scope" style={{ position: "relative", background: "var(--c42-paper)", width: 1920, minHeight: 3000 }}>
       <TopBar />
       <BlogHero article={featuredArticle} />
       <TabBar active={tab} setActive={setTab} />
