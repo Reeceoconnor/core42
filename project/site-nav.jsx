@@ -33,14 +33,19 @@ function useIsMobile() {
 }
 
 // Wraps the desktop page in a zoomed frame so 1920px designs fit the current
-// viewport edge-to-edge. Uses CSS `zoom` which (unlike transform: scale) also
-// scales the element's layout box — the browser handles both visual size and
-// document flow in one step. This makes every page render identically for the
-// same viewport width: announcement strip, hero, body all share one scale.
+// viewport.
+//
+//  - Below 1920px viewport: scales the whole artboard down proportionally.
+//  - At or above 1920px: renders at 1:1 and centers horizontally so the hero
+//    fits within a normal "first fold" (its designed-for 1920×auto size).
+//
+// Uses CSS `zoom` which scales both visual and layout dimensions in one step,
+// so every page renders identically for the same viewport width.
 const DesktopFrame = ({ children, artboardWidth = 1920 }) => {
   const getScale = () => {
     if (typeof window === "undefined") return 1;
-    return (document.documentElement.clientWidth || artboardWidth) / artboardWidth;
+    const w = document.documentElement.clientWidth || artboardWidth;
+    return Math.min(1, w / artboardWidth);
   };
   const [scale, setScale] = React.useState(getScale);
 
@@ -52,8 +57,10 @@ const DesktopFrame = ({ children, artboardWidth = 1920 }) => {
   }, [artboardWidth]);
 
   return (
-    <div style={{ width: artboardWidth, zoom: scale }}>
-      {children}
+    <div style={{ width: "100%", display: "flex", justifyContent: "center", background: "var(--c42-paper)" }}>
+      <div style={{ width: artboardWidth, zoom: scale }}>
+        {children}
+      </div>
     </div>
   );
 };
