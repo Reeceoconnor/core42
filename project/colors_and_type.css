@@ -1,0 +1,345 @@
+/* =========================================================
+   Core42 — Colors & Type Foundation
+   ---------------------------------------------------------
+   Built from the Core42 Figma (marketing website): HOMEPAGE,
+   ABOUT, PRODUCT, CONTACT, MENU (desktop/tablet/mobile).
+   Sovereign-AI brand vocabulary: deep forest green primaries,
+   signal orange accent, mint/green highlight, warm off-white
+   neutrals. NB International Pro throughout.
+   ========================================================= */
+
+/* ---------- Fonts ---------- */
+@font-face {
+  font-family: "NB International Pro";
+  src: url("./fonts/NBInternationalPro-Light.ttf") format("truetype");
+  font-weight: 300; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: "NB International Pro";
+  src: url("./fonts/NBInternationalPro-LightItalic.ttf") format("truetype");
+  font-weight: 300; font-style: italic; font-display: swap;
+}
+@font-face {
+  font-family: "NB International Pro";
+  src: url("./fonts/NBInternationalPro-Book.ttf") format("truetype");
+  font-weight: 350; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: "NB International Pro";
+  src: url("./fonts/NBInternationalPro-BookItalic.ttf") format("truetype");
+  font-weight: 350; font-style: italic; font-display: swap;
+}
+@font-face {
+  font-family: "NB International Pro";
+  src: url("./fonts/NBInternationalPro-Regular.ttf") format("truetype");
+  font-weight: 400; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: "NB International Pro";
+  src: url("./fonts/NBInternationalPro-Italic.ttf") format("truetype");
+  font-weight: 400; font-style: italic; font-display: swap;
+}
+@font-face {
+  font-family: "NB International Pro";
+  src: url("./fonts/NBInternationalPro-Medium.ttf") format("truetype");
+  font-weight: 500; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: "NB International Pro";
+  src: url("./fonts/NBInternationalPro-MediumItalic.ttf") format("truetype");
+  font-weight: 500; font-style: italic; font-display: swap;
+}
+@font-face {
+  font-family: "NB International Pro";
+  src: url("./fonts/NBInternationalPro-Bold.ttf") format("truetype");
+  font-weight: 700; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: "NB International Pro";
+  src: url("./fonts/NBInternationalPro-BoldItalic.ttf") format("truetype");
+  font-weight: 700; font-style: italic; font-display: swap;
+}
+@font-face {
+  font-family: "NB International Pro Mono";
+  src: url("./fonts/NBInternationalPro-Mono.ttf") format("truetype");
+  font-weight: 400; font-style: normal; font-display: swap;
+}
+
+:root {
+  /* ---------- Core brand colors ---------- */
+  --c42-forest:        rgb(24, 45, 33);    /* primary dark — footer, hero, mission */
+  --c42-forest-deep:   rgb(29, 44, 34);
+  --c42-forest-ink:    rgb(25, 28, 26);    /* near-black on beige */
+  --c42-ink:           rgb(0, 0, 0);
+  --c42-mint:          rgb(72, 222, 147);  /* accent green — dominant brand color */
+  --c42-mint-50:       rgba(72, 222, 147, 0.5);
+  --c42-orange:        rgb(255, 77, 0);    /* signal / CTA / underline */
+  --c42-orange-80:     rgba(242, 131, 13, 0.8);
+  --c42-orange-peach:  rgb(255, 207, 186);
+  --c42-amber:         rgb(255, 181, 43);
+
+  /* ---------- Neutrals (warm off-white stack) ---------- */
+  --c42-paper:         rgb(241, 237, 232); /* primary neutral — page surface */
+  --c42-paper-2:       rgb(245, 242, 239);
+  --c42-paper-3:       rgb(246, 243, 239);
+  --c42-paper-edge:    rgb(235, 233, 231);
+  --c42-paper-edge-2:  rgb(234, 229, 224);
+  --c42-white:         rgb(255, 255, 255);
+
+  /* ---------- Grays ---------- */
+  --c42-gray-60:       rgb(150, 150, 150);
+  --c42-gray-65:       rgb(152, 152, 152);
+  --c42-gray-80:       rgb(170, 162, 151); /* warm taupe */
+  --c42-gray-d9:       rgb(217, 217, 217);
+  --c42-gray-bb:       rgb(187, 187, 187);
+
+  /* ---------- Semantic tokens ---------- */
+  --fg-1: var(--c42-forest);       /* primary text on light */
+  --fg-2: var(--c42-forest-ink);   /* alternate primary */
+  --fg-inv: var(--c42-white);      /* text on dark */
+  --fg-muted: var(--c42-gray-60);
+  --fg-accent: var(--c42-orange);  /* eyebrows, inline links, underlines */
+  --fg-highlight: var(--c42-mint);
+
+  --bg-page: var(--c42-white);
+  --bg-surface: var(--c42-paper);
+  --bg-surface-2: var(--c42-paper-2);
+  --bg-dark: var(--c42-forest);
+  --bg-ink: var(--c42-forest-ink);
+  --bg-accent: var(--c42-orange);
+  --bg-highlight: var(--c42-mint);
+
+  --border-hair: rgba(241, 237, 232, 0.3);
+  --border-rule: var(--c42-orange); /* brand rule lines above eyebrows */
+  --border-field: var(--c42-gray-60);
+
+  /* ---------- Typography ---------- */
+  --font-sans: "NB International Pro", "Helvetica Neue", Arial, sans-serif;
+  --font-mono: "NB International Pro Mono", ui-monospace, Menlo, Consolas, monospace;
+
+  /* Scale — marketing-deck-heavy, goes BIG */
+  --fs-hero:      96px;   /* "Engineered intelligence" */
+  --fs-display:   64px;   /* section H1 */
+  --fs-display-s: 50px;
+  --fs-h1:        40px;   /* "Connect with us" */
+  --fs-h2:        30px;
+  --fs-h3:        24px;
+  --fs-body-lg:   20px;
+  --fs-body:      16px;   /* base */
+  --fs-body-s:    14px;
+  --fs-caption:   13px;
+  --fs-micro:     12px;
+
+  --lh-tight:    1.0;
+  --lh-snug:     1.1;
+  --lh-normal:   1.25;
+  --lh-body:     1.5;
+
+  --tracking-tight:  -0.03em; /* hero */
+  --tracking-snug:   -0.02em; /* display */
+  --tracking-kiss:   -0.005em;
+  --tracking-caps:    0.04em; /* button uppercase */
+
+  /* ---------- Radii ---------- */
+  --radius-pill: 28px;     /* buttons — always pill */
+  --radius-none: 0px;      /* cards, images — Core42 is mostly SQUARE */
+  --radius-sm:   4px;      /* only for small chips */
+
+  /* ---------- Spacing (8pt) ---------- */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-10: 40px;
+  --space-12: 48px;
+  --space-16: 64px;
+  --space-20: 80px;
+  --space-24: 96px;
+  --space-32: 128px;
+  --space-40: 160px;
+
+  /* ---------- Elevation ---------- */
+  --shadow-none: none;
+  --shadow-soft: 0 2px 16px rgba(24, 45, 33, 0.06);
+  --shadow-card: 0 4px 24px rgba(24, 45, 33, 0.08);
+
+  /* ---------- Motion ---------- */
+  --dur-fast: 140ms;
+  --dur-base: 220ms;
+  --dur-slow: 420ms;
+  --ease-out: cubic-bezier(0.22, 0.61, 0.36, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+
+  /* ---------- Layout ---------- */
+  --container-max: 1440px;
+  --page-gutter: 240px;       /* desktop side margin for hero */
+  --nav-width: 240px;         /* left rail width */
+  --topbar-h: 50px;
+}
+
+/* ===========================================================
+   Base element styles (opt-in via .c42-scope on root)
+   =========================================================== */
+
+.c42-scope, .c42-scope * { box-sizing: border-box; }
+
+.c42-scope {
+  font-family: var(--font-sans);
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+  color: var(--fg-1);
+  background: var(--bg-page);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+.c42-scope h1, .c42-hero {
+  font-family: var(--font-sans);
+  font-weight: 700;
+  font-size: var(--fs-hero);
+  line-height: var(--lh-tight);
+  letter-spacing: var(--tracking-tight);
+  margin: 0;
+}
+.c42-scope h2, .c42-display {
+  font-family: var(--font-sans);
+  font-weight: 700;
+  font-size: var(--fs-display);
+  line-height: var(--lh-snug);
+  letter-spacing: var(--tracking-snug);
+  margin: 0;
+}
+.c42-scope h3, .c42-h1 {
+  font-family: var(--font-sans);
+  font-weight: 700;
+  font-size: var(--fs-h1);
+  line-height: var(--lh-snug);
+  margin: 0;
+}
+.c42-scope h4, .c42-h2 {
+  font-family: var(--font-sans);
+  font-weight: 700;
+  font-size: var(--fs-h2);
+  line-height: var(--lh-snug);
+  margin: 0;
+}
+.c42-scope h5, .c42-h3 {
+  font-family: var(--font-sans);
+  font-weight: 700;
+  font-size: var(--fs-h3);
+  line-height: var(--lh-normal);
+  margin: 0;
+}
+.c42-scope p, .c42-body {
+  font-size: var(--fs-body);
+  line-height: 24px;
+  margin: 0;
+}
+.c42-lede, .c42-scope .lede {
+  font-size: var(--fs-body-lg);
+  line-height: 26px;
+}
+.c42-scope small, .c42-caption {
+  font-size: var(--fs-caption);
+  line-height: 1.4;
+  color: var(--fg-muted);
+}
+.c42-scope code, .c42-mono {
+  font-family: var(--font-mono);
+  font-size: 0.95em;
+}
+
+/* ---------- Eyebrow label (orange caps above headlines) ---------- */
+.c42-eyebrow {
+  font-size: var(--fs-body);
+  line-height: 28px;
+  color: var(--fg-accent);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-caps);
+  font-weight: 400;
+  border-top: 1px solid var(--c42-orange);
+  padding-top: var(--space-3);
+  display: block;
+}
+
+/* ---------- Button (pill) — THE Core42 button ---------- */
+.c42-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 11px 24px;
+  min-height: 38px;
+  border-radius: var(--radius-pill);
+  font-family: var(--font-sans);
+  font-weight: 700;
+  font-size: var(--fs-body);
+  line-height: 1;
+  letter-spacing: var(--tracking-caps);
+  text-transform: uppercase;
+  text-decoration: none;
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition:
+    background-color var(--dur-base) var(--ease-out),
+    color var(--dur-base) var(--ease-out),
+    transform var(--dur-fast) var(--ease-out);
+}
+.c42-btn:active { transform: scale(0.98); }
+
+.c42-btn--primary {
+  background: var(--c42-orange);
+  color: var(--c42-white);
+}
+.c42-btn--primary:hover { background: #e04400; }
+
+.c42-btn--secondary {
+  background: var(--c42-white);
+  color: var(--c42-orange);
+}
+.c42-btn--secondary:hover { background: var(--c42-paper-edge); }
+
+.c42-btn--ghost {
+  background: var(--c42-paper-edge);
+  color: var(--c42-forest);
+}
+.c42-btn--ghost:hover { background: var(--c42-paper-edge-2); }
+
+.c42-btn--dark {
+  background: var(--c42-forest);
+  color: var(--c42-white);
+}
+.c42-btn--dark:hover { background: var(--c42-forest-deep); }
+
+/* ---------- Input — flat square field, 1px hairline ---------- */
+.c42-input {
+  width: 100%;
+  height: 50px;
+  padding: 0 16px;
+  border: 1px solid var(--border-field);
+  border-radius: 0;
+  background: var(--c42-white);
+  font-family: var(--font-sans);
+  font-size: var(--fs-body);
+  color: var(--fg-1);
+  outline: none;
+  transition: border-color var(--dur-base) var(--ease-out);
+}
+.c42-input::placeholder { color: var(--fg-muted); }
+.c42-input:focus { border-color: var(--c42-orange); }
+
+/* ---------- Section dividers ---------- */
+.c42-rule          { height: 1px; background: var(--c42-orange); border: 0; }
+.c42-rule--mint    { height: 2px; background: var(--c42-mint-50); border: 0; }
+.c42-rule--hair    { height: 1px; background: var(--border-hair); border: 0; }
+
+/* ---------- Utilities ---------- */
+.c42-uppercase   { text-transform: uppercase; letter-spacing: var(--tracking-caps); }
+.c42-text-accent { color: var(--fg-accent); }
+.c42-text-mint   { color: var(--c42-mint); }
+.c42-text-inv    { color: var(--fg-inv); }
+.c42-bg-forest   { background: var(--c42-forest); color: var(--fg-inv); }
+.c42-bg-paper    { background: var(--c42-paper); color: var(--fg-1); }
+.c42-bg-ink      { background: var(--c42-forest-ink); color: var(--fg-inv); }

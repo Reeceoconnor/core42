@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Core42 — Blog & Resources Directory</title>
+<link rel="stylesheet" href="colors_and_type.css" />
+<style>
+  html, body { margin: 0; padding: 0; background: #f0eee9; font-family: var(--font-sans); }
+  /* Hide scrollbars inside artboards for a cleaner design-canvas look */
+  .c42-scope { overflow: hidden; }
+
+  /* Tweaks panel */
+  #tweaks-panel {
+    position: fixed; right: 20px; bottom: 20px; z-index: 9999;
+    width: 300px; background: rgba(24,45,33,0.98); color: #fff;
+    padding: 20px; font-family: var(--font-sans); font-size: 13px;
+    border: 1px solid rgba(255,255,255,0.1); display: none;
+  }
+  #tweaks-panel.visible { display: block; }
+  #tweaks-panel h4 { margin: 0 0 14px; font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--c42-orange); font-weight: 700; }
+  #tweaks-panel .row { margin-bottom: 14px; }
+  #tweaks-panel label { display: block; font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; color: rgba(255,255,255,0.6); margin-bottom: 6px; }
+  #tweaks-panel .opts { display: flex; gap: 4px; flex-wrap: wrap; }
+  #tweaks-panel .opts button {
+    flex: 1; padding: 8px 10px; background: transparent; border: 1px solid rgba(255,255,255,0.2);
+    color: #fff; font-family: inherit; font-size: 12px; cursor: pointer; transition: all 220ms;
+  }
+  #tweaks-panel .opts button.active { background: var(--c42-orange); border-color: var(--c42-orange); }
+  #tweaks-panel .opts button:hover:not(.active) { border-color: rgba(255,255,255,0.5); }
+</style>
+</head>
+<body>
+<div id="root"></div>
+
+<!-- Tweaks panel (hidden until activated) -->
+<div id="tweaks-panel">
+  <h4>Tweaks</h4>
+  <div class="row">
+    <label>Blog featured style</label>
+    <div class="opts" data-key="blogFeatured">
+      <button data-val="split">Split</button>
+      <button data-val="minimal">Minimal</button>
+    </div>
+  </div>
+  <div class="row">
+    <label>Blog grid density</label>
+    <div class="opts" data-key="blogDensity">
+      <button data-val="3col">3-col</button>
+      <button data-val="2col">2-col</button>
+    </div>
+  </div>
+  <div class="row">
+    <label>Resources hero bg</label>
+    <div class="opts" data-key="resHero">
+      <button data-val="paper">Paper</button>
+      <button data-val="forest">Forest</button>
+    </div>
+  </div>
+  <div class="row">
+    <label>Card hover lift</label>
+    <div class="opts" data-key="cardHover">
+      <button data-val="on">On</button>
+      <button data-val="off">Off</button>
+    </div>
+  </div>
+</div>
+
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+
+<script type="text/babel" src="design-canvas.jsx"></script>
+<script type="text/babel" src="ios-frame.jsx"></script>
+<script type="text/babel" src="Components.jsx"></script>
+<script type="text/babel" src="BlogPage.jsx"></script>
+<script type="text/babel" src="DirectoryPage.jsx"></script>
+<script type="text/babel" src="DirectoryPageV2.jsx"></script>
+<script type="text/babel" src="DirectoryPageV3.jsx"></script>
+<script type="text/babel" src="templates/BlogArticlePage.jsx"></script>
+<script type="text/babel" src="templates/WhitepaperDetailPage.jsx"></script>
+<script type="text/babel" src="templates/WebinarUpcomingPage.jsx"></script>
+<script type="text/babel" src="templates/WebinarOnDemandPage.jsx"></script>
+<script type="text/babel" src="templates/CaseStudyDetailPage.jsx"></script>
+<script type="text/babel" src="MobileDirectoryPage.jsx"></script>
+<script type="text/babel" src="templates/MobileTemplates.jsx"></script>
+
+<script type="text/babel">
+const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
+  "blogFeatured": "split",
+  "blogDensity": "3col",
+  "resHero": "paper",
+  "cardHover": "off"
+}/*EDITMODE-END*/;
+
+// Apply tweaks via CSS custom properties / body classes
+function applyTweaks(t) {
+  document.body.dataset.blogFeatured = t.blogFeatured;
+  document.body.dataset.blogDensity = t.blogDensity;
+  document.body.dataset.resHero = t.resHero;
+  document.body.dataset.cardHover = t.cardHover;
+}
+
+// Dynamic stylesheet driven by data-* attrs
+const dyn = document.createElement('style');
+dyn.textContent = `
+  body[data-blog-density="2col"] .blog-grid { grid-template-columns: repeat(2, 1fr) !important; gap: 70px 50px !important; }
+  body[data-res-hero="forest"] .dir-hero { background: var(--c42-forest) !important; color: #fff !important; }
+  body[data-res-hero="forest"] .dir-hero h1 { color: #fff !important; }
+  body[data-res-hero="forest"] .dir-hero p { color: rgba(241,237,232,0.85) !important; }
+  body[data-res-hero="forest"] .dir-hero .stats-panel { border-left-color: var(--c42-mint) !important; }
+  body[data-res-hero="forest"] .dir-hero .stats-panel span { color: #fff !important; }
+  body[data-res-hero="forest"] .dir-hero .stats-panel .muted { color: rgba(241,237,232,0.6) !important; }
+  body[data-card-hover="off"] .hover-lift { transition: none !important; }
+  body[data-card-hover="off"] .hover-lift:hover { transform: none !important; }
+  body[data-blog-featured="minimal"] .featured-split { grid-template-columns: 1fr !important; gap: 32px !important; }
+  body[data-blog-featured="minimal"] .featured-split img { max-height: 380px; }
+`;
+document.head.appendChild(dyn);
+
+applyTweaks(TWEAK_DEFAULTS);
+
+// Tweaks mode wiring
+let currentTweaks = { ...TWEAK_DEFAULTS };
+const panel = document.getElementById('tweaks-panel');
+
+function refreshButtons() {
+  panel.querySelectorAll('.opts').forEach(group => {
+    const key = group.dataset.key;
+    group.querySelectorAll('button').forEach(b => {
+      b.classList.toggle('active', b.dataset.val === currentTweaks[key]);
+    });
+  });
+}
+
+panel.querySelectorAll('.opts button').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const key = btn.parentElement.dataset.key;
+    const val = btn.dataset.val;
+    currentTweaks = { ...currentTweaks, [key]: val };
+    applyTweaks(currentTweaks);
+    refreshButtons();
+    window.parent.postMessage({ type: '__edit_mode_set_keys', edits: { [key]: val } }, '*');
+  });
+});
+refreshButtons();
+
+window.addEventListener('message', (e) => {
+  if (e.data?.type === '__activate_edit_mode') panel.classList.add('visible');
+  if (e.data?.type === '__deactivate_edit_mode') panel.classList.remove('visible');
+});
+window.parent.postMessage({ type: '__edit_mode_available' }, '*');
+
+// ——— Render canvas ———
+const { DesignCanvas, DCSection, DCArtboard } = window;
+
+function App() {
+  const { IOSDevice } = window;
+  return (
+    <DesignCanvas>
+      <DCSection id="desktop" title="Desktop — 1920" subtitle="Blog listing and Resources Directory with Blogs / Whitepapers / Webinars / Case Studies tabs">
+        <DCArtboard id="blog" label="Blog / Dispatches" width={1920} height={3800}>
+          <BlogPage />
+        </DCArtboard>
+        <DCArtboard id="directory" label="Resources Directory" width={1920} height={3200}>
+          <DirectoryPage />
+        </DCArtboard>
+        <DCArtboard id="directory-v2" label="Resources Directory · v2 (Blog hero)" width={1920} height={3400}>
+          <DirectoryPageV2 />
+        </DCArtboard>
+        <DCArtboard id="directory-v3" label="Resources Directory · v3 (Collapsed rail)" width={1920} height={3400}>
+          <DirectoryPageV3 />
+        </DCArtboard>
+      </DCSection>
+      <DCSection id="mobile" title="Mobile — 402" subtitle="Resources directory adapted for iPhone viewport">
+        <DCArtboard id="mobile-resources" label="Resources · iPhone" width={440} height={900}>
+          <div style={{ padding: 19 }}>
+            <IOSDevice width={402} height={862}>
+              <MobileDirectoryPage />
+            </IOSDevice>
+          </div>
+        </DCArtboard>
+      </DCSection>
+      <DCSection id="templates" title="Detail templates" subtitle="One detail page per resource type — article, gated whitepaper, upcoming & on-demand webinars, case study">
+        <DCArtboard id="tpl-blog" label="Blog article" width={1920} height={3800}>
+          <BlogArticlePage />
+        </DCArtboard>
+        <DCArtboard id="tpl-whitepaper" label="Whitepaper · gated download" width={1920} height={3200}>
+          <WhitepaperDetailPage />
+        </DCArtboard>
+        <DCArtboard id="tpl-webinar-upcoming" label="Webinar · Upcoming (gated)" width={1920} height={3400}>
+          <WebinarUpcomingPage />
+        </DCArtboard>
+        <DCArtboard id="tpl-webinar-ondemand" label="Webinar · On-demand (gated player)" width={1920} height={3400}>
+          <WebinarOnDemandPage />
+        </DCArtboard>
+        <DCArtboard id="tpl-case" label="Case study" width={1920} height={3800}>
+          <CaseStudyDetailPage />
+        </DCArtboard>
+      </DCSection>
+      <DCSection id="mobile-templates" title="Mobile — Detail templates" subtitle="Blog article, whitepaper, webinars, and case study adapted for iPhone viewport">
+        <DCArtboard id="mtpl-blog" label="Blog article · iPhone" width={440} height={900}>
+          <div style={{ padding: 19 }}>
+            <IOSDevice width={402} height={862}>
+              <MobileBlogArticlePage />
+            </IOSDevice>
+          </div>
+        </DCArtboard>
+        <DCArtboard id="mtpl-whitepaper" label="Whitepaper · iPhone" width={440} height={900}>
+          <div style={{ padding: 19 }}>
+            <IOSDevice width={402} height={862}>
+              <MobileWhitepaperDetailPage />
+            </IOSDevice>
+          </div>
+        </DCArtboard>
+        <DCArtboard id="mtpl-webinar-upcoming" label="Webinar · Upcoming · iPhone" width={440} height={900}>
+          <div style={{ padding: 19 }}>
+            <IOSDevice width={402} height={862}>
+              <MobileWebinarUpcomingPage />
+            </IOSDevice>
+          </div>
+        </DCArtboard>
+        <DCArtboard id="mtpl-webinar-ondemand" label="Webinar · On-demand · iPhone" width={440} height={900}>
+          <div style={{ padding: 19 }}>
+            <IOSDevice width={402} height={862}>
+              <MobileWebinarOnDemandPage />
+            </IOSDevice>
+          </div>
+        </DCArtboard>
+        <DCArtboard id="mtpl-case" label="Case study · iPhone" width={440} height={900}>
+          <div style={{ padding: 19 }}>
+            <IOSDevice width={402} height={862}>
+              <MobileCaseStudyDetailPage />
+            </IOSDevice>
+          </div>
+        </DCArtboard>
+      </DCSection>
+    </DesignCanvas>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+</script>
+</body>
+</html>
