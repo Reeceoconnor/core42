@@ -8,7 +8,6 @@
 <link rel="stylesheet" href="colors_and_type.css" />
 <style>
   html, body { margin: 0; padding: 0; background: var(--c42-paper); font-family: var(--font-sans); min-height: 100vh; }
-  /* Keep the fixed-width desktop artboards centered when they're narrower than viewport */
   #root { min-height: 100vh; }
 </style>
 </head>
@@ -33,16 +32,9 @@
 <script type="text/babel" src="templates/MobileTemplates.jsx"></script>
 
 <script type="text/babel">
-function Page() {
-  const isMobile = useIsMobile();
-  return (
-    <>
-      {!isMobile && <SiteHeader active="home" />}
-      <ResponsivePage Desktop={BlogPage} Mobile={MobileDirectoryPage} />
-    </>
-  );
-}
-ReactDOM.createRoot(document.getElementById('root')).render(<Page />);
+ReactDOM.createRoot(document.getElementById('root')).render(
+  <ResponsivePage Desktop={BlogPage} Mobile={MobileDirectoryPage} active="home" />
+);
 </script>
 </body>
 </html>

@@ -32,9 +32,11 @@ function useIsMobile() {
   return isMobile;
 }
 
-// Wraps the desktop page in a scaled frame so 1920px designs fit inside viewports
-// smaller than 1920 without horizontal scroll. Uses CSS transform; preserves
-// proportions and click targets.
+// Wraps the desktop page in a scaled frame so 1920px designs fit the current
+// viewport edge-to-edge. Scales down on narrow viewports and up on wider ones
+// so the design always fills the width. Content that sits above the page
+// (e.g. SiteHeader) should be passed as children alongside the Desktop tree
+// so it scales with the rest.
 const DesktopFrame = ({ children, artboardWidth = 1920 }) => {
   const wrapRef = React.useRef(null);
   const innerRef = React.useRef(null);
@@ -44,14 +46,13 @@ const DesktopFrame = ({ children, artboardWidth = 1920 }) => {
   React.useLayoutEffect(() => {
     const update = () => {
       const w = wrapRef.current?.clientWidth || artboardWidth;
-      const s = Math.min(1, w / artboardWidth);
+      const s = w / artboardWidth;
       setScale(s);
       const h = innerRef.current?.scrollHeight || 0;
       setInnerHeight(h * s);
     };
     update();
     window.addEventListener("resize", update);
-    // Observe content mutations (images loading, state changes)
     const ro = new ResizeObserver(update);
     if (innerRef.current) ro.observe(innerRef.current);
     return () => { window.removeEventListener("resize", update); ro.disconnect(); };
@@ -77,13 +78,16 @@ const DesktopFrame = ({ children, artboardWidth = 1920 }) => {
 
 // ResponsivePage — picks the right component for the current viewport.
 // Pass Desktop (full-res, e.g. BlogPage) and Mobile (narrow, e.g. MobileDirectoryPage).
-const ResponsivePage = ({ Desktop, Mobile }) => {
+// On desktop, SiteHeader sits inside the DesktopFrame so it scales with content
+// and always aligns with the artboard (no mismatched full-viewport header).
+const ResponsivePage = ({ Desktop, Mobile, active = "home" }) => {
   const isMobile = useIsMobile();
   if (isMobile) {
     return <Mobile />;
   }
   return (
     <DesktopFrame>
+      <SiteHeader active={active} />
       <Desktop />
     </DesktopFrame>
   );
