@@ -32,49 +32,28 @@ function useIsMobile() {
   return isMobile;
 }
 
-// Wraps the desktop page in a scaled frame so 1920px designs fit the current
-// viewport edge-to-edge. Scales down on narrow viewports and up on wider ones
-// so the design always fills the width. Uses document.documentElement.clientWidth
-// (the reliable viewport-width measure) to ensure every page produces the same
-// scale for the same browser window — so e.g. the announcement TopBar renders at
-// identical height regardless of which page is loaded.
+// Wraps the desktop page in a zoomed frame so 1920px designs fit the current
+// viewport edge-to-edge. Uses CSS `zoom` which (unlike transform: scale) also
+// scales the element's layout box — the browser handles both visual size and
+// document flow in one step. This makes every page render identically for the
+// same viewport width: announcement strip, hero, body all share one scale.
 const DesktopFrame = ({ children, artboardWidth = 1920 }) => {
-  const innerRef = React.useRef(null);
-  const [scale, setScale] = React.useState(() => {
+  const getScale = () => {
     if (typeof window === "undefined") return 1;
     return (document.documentElement.clientWidth || artboardWidth) / artboardWidth;
-  });
-  const [innerHeight, setInnerHeight] = React.useState(0);
+  };
+  const [scale, setScale] = React.useState(getScale);
 
-  React.useLayoutEffect(() => {
-    const update = () => {
-      const w = document.documentElement.clientWidth || artboardWidth;
-      const s = w / artboardWidth;
-      setScale(s);
-      const h = innerRef.current?.scrollHeight || 0;
-      setInnerHeight(h * s);
-    };
+  React.useEffect(() => {
+    const update = () => setScale(getScale());
     update();
     window.addEventListener("resize", update);
-    const ro = new ResizeObserver(update);
-    if (innerRef.current) ro.observe(innerRef.current);
-    return () => { window.removeEventListener("resize", update); ro.disconnect(); };
+    return () => window.removeEventListener("resize", update);
   }, [artboardWidth]);
 
   return (
-    <div style={{ width: "100%", overflow: "hidden" }}>
-      <div style={{ width: "100%", height: innerHeight || "auto", position: "relative" }}>
-        <div
-          ref={innerRef}
-          style={{
-            width: artboardWidth,
-            transform: `scale(${scale})`,
-            transformOrigin: "top left",
-          }}
-        >
-          {children}
-        </div>
-      </div>
+    <div style={{ width: artboardWidth, zoom: scale }}>
+      {children}
     </div>
   );
 };
