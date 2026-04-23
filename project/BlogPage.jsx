@@ -80,7 +80,7 @@ const BlogHero = ({ article }) => (
     </div>
 
     {/* Featured article card */}
-    <a href="#" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 60, alignItems: "center", textDecoration: "none", color: "inherit", paddingTop: 60, borderTop: "2px solid var(--c42-mint-50)" }}>
+    <a href={(window.URLS||{}).blogArticle || "#"} style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 60, alignItems: "center", textDecoration: "none", color: "inherit", paddingTop: 60, borderTop: "2px solid var(--c42-mint-50)" }}>
       <div style={{ position: "relative" }}>
         <img src={article.img} style={{ width: "100%", aspectRatio: "4/3", objectFit: "cover", display: "block" }} />
         <div style={{ position: "absolute", top: 16, left: 16, background: "var(--c42-orange)", color: "#fff", padding: "6px 14px", fontSize: 12, letterSpacing: "0.06em", textTransform: "uppercase", fontWeight: 700 }}>Featured</div>
@@ -153,7 +153,7 @@ const BlogFilterBar = ({ category, setCategory, audience, setAudience, query, se
 );
 
 const BlogCard = ({ a }) => (
-  <a href="#" style={{ textDecoration: "none", color: "inherit", display: "flex", flexDirection: "column", gap: 20 }}>
+  <a href={(window.URLS||{}).blogArticle || "#"} style={{ textDecoration: "none", color: "inherit", display: "flex", flexDirection: "column", gap: 20 }}>
     <div style={{ position: "relative", aspectRatio: "4/3", overflow: "hidden", background: "var(--c42-paper-edge)" }}>
       <img src={a.img} style={{ width: "100%", height: "100%", objectFit: "cover", transition: "transform 420ms" }}
         onMouseEnter={e => e.target.style.transform = "scale(1.04)"}

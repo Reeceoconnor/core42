@@ -95,7 +95,7 @@ const MobileFilterChips = ({ topics, active, setActive }) => (
 
 // ---- Mobile cards ----
 const MobileBlogFeatured = ({ a }) => (
-  <a href="#" style={{ textDecoration: "none", color: "inherit", background: "var(--c42-forest)", color: "#fff", display: "block" }}>
+  <a href={(window.URLS||{}).blogArticle || "#"} style={{ textDecoration: "none", color: "inherit", background: "var(--c42-forest)", color: "#fff", display: "block" }}>
     <div style={{ position: "relative", aspectRatio: "16/10", overflow: "hidden" }}>
       <img src={a.img} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
       <div style={{ position: "absolute", top: 14, left: 14, background: "var(--c42-orange)", color: "#fff", padding: "5px 12px", fontSize: 10, letterSpacing: "0.08em", textTransform: "uppercase", fontWeight: 700 }}>Featured</div>
@@ -117,7 +117,7 @@ const MobileBlogFeatured = ({ a }) => (
 );
 
 const MobileBlogCard = ({ a }) => (
-  <a href="#" style={{ textDecoration: "none", color: "inherit", display: "flex", gap: 14, padding: "18px 0", borderBottom: "1px solid rgba(25,28,26,0.1)" }}>
+  <a href={(window.URLS||{}).blogArticle || "#"} style={{ textDecoration: "none", color: "inherit", display: "flex", gap: 14, padding: "18px 0", borderBottom: "1px solid rgba(25,28,26,0.1)" }}>
     <div style={{ width: 112, flexShrink: 0, aspectRatio: "1", overflow: "hidden", background: "var(--c42-paper-edge)" }}>
       <img src={a.img} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
     </div>
@@ -132,9 +132,10 @@ const MobileBlogCard = ({ a }) => (
 );
 
 const MobileWhitepaperCard = ({ w, featured = false }) => {
+  const href = (window.URLS||{}).whitepaper || "#";
   if (featured) {
     return (
-      <a href="#" style={{ textDecoration: "none", color: "inherit", background: "var(--c42-forest)", color: "#fff", display: "block" }}>
+      <a href={href} style={{ textDecoration: "none", color: "inherit", background: "var(--c42-forest)", color: "#fff", display: "block" }}>
         <div style={{ aspectRatio: "16/10", background: `url(${w.img}) center/cover` }} />
         <div style={{ padding: "24px 20px 28px" }}>
           <div style={{ fontFamily: "var(--font-mono)", fontSize: 10, color: "var(--c42-orange)", letterSpacing: "0.08em", textTransform: "uppercase", borderTop: "1px solid var(--c42-orange)", paddingTop: 10, marginBottom: 14, display: "inline-block" }}>
@@ -153,7 +154,7 @@ const MobileWhitepaperCard = ({ w, featured = false }) => {
     );
   }
   return (
-    <a href="#" style={{ textDecoration: "none", color: "inherit", background: "#fff", display: "block", marginBottom: 12 }}>
+    <a href={href} style={{ textDecoration: "none", color: "inherit", background: "#fff", display: "block", marginBottom: 12 }}>
       <div style={{ position: "relative", aspectRatio: "16/10", overflow: "hidden", background: "var(--c42-paper-edge)" }}>
         <img src={w.img} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
         <div style={{ position: "absolute", top: 12, right: 12, background: "rgba(24,45,33,0.9)", color: "#fff", padding: "4px 10px", fontSize: 10, letterSpacing: "0.06em", textTransform: "uppercase", fontFamily: "var(--font-mono)", fontWeight: 500 }}>
@@ -176,7 +177,7 @@ const MobileWhitepaperCard = ({ w, featured = false }) => {
 };
 
 const MobileWebinarRow = ({ w }) => (
-  <a href="#" style={{ textDecoration: "none", color: "inherit", display: "block", padding: "18px 0", borderBottom: "1px solid rgba(25,28,26,0.1)" }}>
+  <a href={w.status === "Upcoming" ? ((window.URLS||{}).webinarUpcoming || "#") : ((window.URLS||{}).webinarOnDemand || "#")} style={{ textDecoration: "none", color: "inherit", display: "block", padding: "18px 0", borderBottom: "1px solid rgba(25,28,26,0.1)" }}>
     <div style={{ display: "flex", gap: 14, alignItems: "flex-start" }}>
       <div style={{ position: "relative", width: 120, flexShrink: 0, aspectRatio: "16/10", overflow: "hidden", background: "var(--c42-paper-edge)" }}>
         <img src={w.img} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
@@ -203,7 +204,7 @@ const MobileWebinarRow = ({ w }) => (
 );
 
 const MobileCaseCard = ({ c }) => (
-  <a href="#" style={{ textDecoration: "none", color: "inherit", background: "var(--c42-forest-ink)", color: "#fff", display: "block", marginBottom: 12 }}>
+  <a href={(window.URLS||{}).caseStudy || "#"} style={{ textDecoration: "none", color: "inherit", background: "var(--c42-forest-ink)", color: "#fff", display: "block", marginBottom: 12 }}>
     <div style={{ aspectRatio: "16/10", background: `url(${c.img}) center/cover` }} />
     <div style={{ padding: "20px 20px 24px" }}>
       <div style={{ fontFamily: "var(--font-mono)", fontSize: 10, color: "var(--c42-orange)", letterSpacing: "0.08em", textTransform: "uppercase", borderTop: "1px solid var(--c42-orange)", paddingTop: 10, marginBottom: 14, display: "inline-block" }}>

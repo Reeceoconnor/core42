@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <base href="/core42/project/" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Blog — Core42</title>
+<title>Webinar (Upcoming) — Core42</title>
 <link rel="stylesheet" href="colors_and_type.css" />
 <style>
   html, body { margin: 0; padding: 0; background: var(--c42-paper); font-family: var(--font-sans); min-height: 100vh; }
@@ -37,8 +37,8 @@ function Page() {
   const isMobile = useIsMobile();
   return (
     <>
-      {!isMobile && <SiteHeader active="home" />}
-      <ResponsivePage Desktop={BlogPage} Mobile={MobileDirectoryPage} />
+      {!isMobile && <SiteHeader active="resources" />}
+      <ResponsivePage Desktop={WebinarUpcomingPage} Mobile={MobileWebinarUpcomingPage} />
     </>
   );
 }

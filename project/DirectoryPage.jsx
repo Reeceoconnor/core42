@@ -106,9 +106,10 @@ const TopicFilter = ({ topics, active, setActive }) => (
 
 // ---- Whitepaper card ----
 const WhitepaperCard = ({ w, featured = false }) => {
+  const href = (window.URLS||{}).whitepaper || "#";
   if (featured) {
     return (
-      <a href="#" style={{ gridColumn: "span 2", textDecoration: "none", color: "inherit", background: "var(--c42-forest)", color: "#fff", display: "grid", gridTemplateColumns: "1fr 1fr", minHeight: 440 }}>
+      <a href={href} style={{ gridColumn: "span 2", textDecoration: "none", color: "inherit", background: "var(--c42-forest)", color: "#fff", display: "grid", gridTemplateColumns: "1fr 1fr", minHeight: 440 }}>
         <div style={{ background: `url(${w.img}) center/cover` }} />
         <div style={{ padding: "56px 48px", display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
           <div>
@@ -129,7 +130,7 @@ const WhitepaperCard = ({ w, featured = false }) => {
     );
   }
   return (
-    <a href="#" style={{ textDecoration: "none", color: "inherit", display: "flex", flexDirection: "column", background: "#fff", transition: "transform 220ms" }}
+    <a href={href} style={{ textDecoration: "none", color: "inherit", display: "flex", flexDirection: "column", background: "#fff", transition: "transform 220ms" }}
        onMouseEnter={e => e.currentTarget.style.transform = "translateY(-4px)"}
        onMouseLeave={e => e.currentTarget.style.transform = "translateY(0)"}>
       <div style={{ position: "relative", aspectRatio: "3/2", overflow: "hidden", background: "var(--c42-paper-edge)" }}>
@@ -155,7 +156,7 @@ const WhitepaperCard = ({ w, featured = false }) => {
 
 // ---- Webinar row ----
 const WebinarRow = ({ w }) => (
-  <a href="#" style={{ textDecoration: "none", color: "inherit", display: "grid", gridTemplateColumns: "260px 1fr 180px 140px", gap: 32, alignItems: "center", padding: "24px 20px", borderBottom: "1px solid rgba(25,28,26,0.1)", transition: "background 220ms" }}
+  <a href={w.status === "Upcoming" ? ((window.URLS||{}).webinarUpcoming || "#") : ((window.URLS||{}).webinarOnDemand || "#")} style={{ textDecoration: "none", color: "inherit", display: "grid", gridTemplateColumns: "260px 1fr 180px 140px", gap: 32, alignItems: "center", padding: "24px 20px", borderBottom: "1px solid rgba(25,28,26,0.1)", transition: "background 220ms" }}
      onMouseEnter={e => e.currentTarget.style.background = "rgba(255,255,255,0.4)"}
      onMouseLeave={e => e.currentTarget.style.background = "transparent"}>
     <div style={{ position: "relative", aspectRatio: "16/9", overflow: "hidden", background: "var(--c42-paper-edge)" }}>
@@ -186,7 +187,7 @@ const WebinarRow = ({ w }) => (
 
 // ---- Case study card ----
 const CaseCard = ({ c }) => (
-  <a href="#" style={{ textDecoration: "none", color: "inherit", display: "grid", gridTemplateColumns: "1fr 1fr", minHeight: 340, background: "var(--c42-forest-ink)", color: "#fff" }}>
+  <a href={(window.URLS||{}).caseStudy || "#"} style={{ textDecoration: "none", color: "inherit", display: "grid", gridTemplateColumns: "1fr 1fr", minHeight: 340, background: "var(--c42-forest-ink)", color: "#fff" }}>
     <div style={{ padding: "48px 40px", display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
       <div>
         <div style={{ fontFamily: "var(--font-mono)", fontSize: 11, color: "var(--c42-orange)", letterSpacing: "0.08em", textTransform: "uppercase", borderTop: "1px solid var(--c42-orange)", paddingTop: 10, marginBottom: 20, display: "inline-block" }}>
@@ -205,7 +206,7 @@ const CaseCard = ({ c }) => (
 
 // ---- Blog card (for Blogs tab in Resources) ----
 const BlogFeaturedCard = ({ a }) => (
-  <a href="#" style={{ gridColumn: "span 2", textDecoration: "none", color: "inherit", background: "var(--c42-forest)", color: "#fff", display: "grid", gridTemplateColumns: "1fr 1fr", minHeight: 440 }}>
+  <a href={(window.URLS||{}).blogArticle || "#"} style={{ gridColumn: "span 2", textDecoration: "none", color: "inherit", background: "var(--c42-forest)", color: "#fff", display: "grid", gridTemplateColumns: "1fr 1fr", minHeight: 440 }}>
     <div style={{ background: `url(${a.img}) center/cover`, position: "relative" }}>
       <div style={{ position: "absolute", top: 16, left: 16, background: "var(--c42-orange)", color: "#fff", padding: "6px 14px", fontSize: 12, letterSpacing: "0.06em", textTransform: "uppercase", fontWeight: 700 }}>Featured</div>
     </div>
@@ -228,7 +229,7 @@ const BlogFeaturedCard = ({ a }) => (
 );
 
 const BlogGridCard = ({ a }) => (
-  <a href="#" style={{ textDecoration: "none", color: "inherit", display: "flex", flexDirection: "column", background: "#fff", transition: "transform 220ms" }}
+  <a href={(window.URLS||{}).blogArticle || "#"} style={{ textDecoration: "none", color: "inherit", display: "flex", flexDirection: "column", background: "#fff", transition: "transform 220ms" }}
      onMouseEnter={e => e.currentTarget.style.transform = "translateY(-4px)"}
      onMouseLeave={e => e.currentTarget.style.transform = "translateY(0)"}>
     <div style={{ position: "relative", aspectRatio: "3/2", overflow: "hidden", background: "var(--c42-paper-edge)" }}>
