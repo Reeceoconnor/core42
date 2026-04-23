@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <base href="/core42/project/" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Blog — Core42</title>
+<title>Resources — Core42</title>
 <link rel="stylesheet" href="colors_and_type.css" />
 <style>
   html, body { margin: 0; padding: 0; background: var(--c42-paper); font-family: var(--font-sans); min-height: 100vh; }
@@ -23,6 +23,8 @@
 <script type="text/babel" src="site-nav.jsx"></script>
 <script type="text/babel" src="BlogPage.jsx"></script>
 <script type="text/babel" src="DirectoryPage.jsx"></script>
+<script type="text/babel" src="DirectoryPageV2.jsx"></script>
+<script type="text/babel" src="DirectoryPageV3.jsx"></script>
 <script type="text/babel" src="templates/BlogArticlePage.jsx"></script>
 <script type="text/babel" src="templates/WhitepaperDetailPage.jsx"></script>
 <script type="text/babel" src="templates/WebinarUpcomingPage.jsx"></script>
@@ -33,7 +35,7 @@
 
 <script type="text/babel">
 ReactDOM.createRoot(document.getElementById('root')).render(
-  <ResponsivePage Desktop={BlogPage} Mobile={MobileDirectoryPage} active="home" />
+  <ResponsivePage Desktop={DirectoryPageV3} Mobile={MobileDirectoryPage} />
 );
 </script>
 </body>
