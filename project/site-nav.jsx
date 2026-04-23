@@ -34,18 +34,21 @@ function useIsMobile() {
 
 // Wraps the desktop page in a scaled frame so 1920px designs fit the current
 // viewport edge-to-edge. Scales down on narrow viewports and up on wider ones
-// so the design always fills the width. Content that sits above the page
-// (e.g. SiteHeader) should be passed as children alongside the Desktop tree
-// so it scales with the rest.
+// so the design always fills the width. Uses document.documentElement.clientWidth
+// (the reliable viewport-width measure) to ensure every page produces the same
+// scale for the same browser window — so e.g. the announcement TopBar renders at
+// identical height regardless of which page is loaded.
 const DesktopFrame = ({ children, artboardWidth = 1920 }) => {
-  const wrapRef = React.useRef(null);
   const innerRef = React.useRef(null);
-  const [scale, setScale] = React.useState(1);
+  const [scale, setScale] = React.useState(() => {
+    if (typeof window === "undefined") return 1;
+    return (document.documentElement.clientWidth || artboardWidth) / artboardWidth;
+  });
   const [innerHeight, setInnerHeight] = React.useState(0);
 
   React.useLayoutEffect(() => {
     const update = () => {
-      const w = wrapRef.current?.clientWidth || artboardWidth;
+      const w = document.documentElement.clientWidth || artboardWidth;
       const s = w / artboardWidth;
       setScale(s);
       const h = innerRef.current?.scrollHeight || 0;
@@ -59,7 +62,7 @@ const DesktopFrame = ({ children, artboardWidth = 1920 }) => {
   }, [artboardWidth]);
 
   return (
-    <div ref={wrapRef} style={{ width: "100%", overflow: "hidden" }}>
+    <div style={{ width: "100%", overflow: "hidden" }}>
       <div style={{ width: "100%", height: innerHeight || "auto", position: "relative" }}>
         <div
           ref={innerRef}
