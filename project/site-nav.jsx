@@ -32,38 +32,22 @@ function useIsMobile() {
   return isMobile;
 }
 
-// Wraps the desktop page in a zoomed frame so 1920px designs fit the current
-// viewport.
+// Wraps the desktop page to render at its native 1920px width — no scaling.
 //
-//  - Below 1920px viewport: scales the whole artboard down proportionally.
-//  - At or above 1920px: renders at 1:1 and centers horizontally so the hero
-//    fits within a normal "first fold" (its designed-for 1920×auto size).
+//  - Viewport >= 1920: centered horizontally, paper margins on the sides.
+//  - Viewport < 1920 (but >= 900px "desktop" breakpoint): horizontal scroll.
+//    Mobile layouts take over below 900px entirely.
 //
-// Uses CSS `zoom` which scales both visual and layout dimensions in one step,
-// so every page renders identically for the same viewport width.
-const DesktopFrame = ({ children, artboardWidth = 1920 }) => {
-  const getScale = () => {
-    if (typeof window === "undefined") return 1;
-    const w = document.documentElement.clientWidth || artboardWidth;
-    return Math.min(1, w / artboardWidth);
-  };
-  const [scale, setScale] = React.useState(getScale);
-
-  React.useEffect(() => {
-    const update = () => setScale(getScale());
-    update();
-    window.addEventListener("resize", update);
-    return () => window.removeEventListener("resize", update);
-  }, [artboardWidth]);
-
-  return (
-    <div style={{ width: "100%", display: "flex", justifyContent: "center", background: "var(--c42-paper)" }}>
-      <div style={{ width: artboardWidth, zoom: scale }}>
-        {children}
-      </div>
+// Keeping it unscaled means every page renders at its designed-for 1920
+// pixel sizes — TopBar is exactly 50px, BlogHero is its designed height,
+// the hero fits inside a normal first fold, and every page matches.
+const DesktopFrame = ({ children, artboardWidth = 1920 }) => (
+  <div style={{ width: "100%", background: "var(--c42-paper)", overflowX: "auto" }}>
+    <div style={{ width: artboardWidth, margin: "0 auto" }}>
+      {children}
     </div>
-  );
-};
+  </div>
+);
 
 // ResponsivePage — picks the right component for the current viewport.
 // Pass Desktop (full-res, e.g. BlogPage) and Mobile (narrow, e.g. MobileDirectoryPage).
