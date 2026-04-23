@@ -78,55 +78,15 @@ const DesktopFrame = ({ children, artboardWidth = 1920 }) => {
 
 // ResponsivePage — picks the right component for the current viewport.
 // Pass Desktop (full-res, e.g. BlogPage) and Mobile (narrow, e.g. MobileDirectoryPage).
-// On desktop, SiteHeader sits inside the DesktopFrame so it scales with content
-// and always aligns with the artboard (no mismatched full-viewport header).
-const ResponsivePage = ({ Desktop, Mobile, active = "home" }) => {
+// No chrome is added — each page's own TopBar / hero handles its top treatment.
+const ResponsivePage = ({ Desktop, Mobile }) => {
   const isMobile = useIsMobile();
-  if (isMobile) {
-    return <Mobile />;
-  }
+  if (isMobile) return <Mobile />;
   return (
     <DesktopFrame>
-      <SiteHeader active={active} />
       <Desktop />
     </DesktopFrame>
   );
 };
 
-// Primary site header — sits above every page, links to the main routes.
-// Replaces the standalone "announcement" TopBar on each page so users always
-// have cross-page navigation. Desktop renders full labels; below 900px the
-// individual page components render their own mobile top bars, so this isn't
-// shown on mobile.
-const SiteHeader = ({ active = "home" }) => {
-  const items = [
-    { id: "home",      label: "Blog",         href: URLS.home },
-    { id: "resources", label: "Resources",    href: URLS.resources },
-  ];
-  return (
-    <div className="c42-topbar" style={{
-      position: "relative", zIndex: 30,
-      background: "var(--c42-paper)", color: "var(--c42-forest-ink)",
-      borderBottom: "1px solid var(--c42-paper-edge)",
-      display: "flex", alignItems: "center", justifyContent: "space-between",
-      padding: "0 48px", height: 64, fontFamily: "var(--font-sans)",
-    }}>
-      <a href={URLS.home} style={{ display: "flex", alignItems: "center", textDecoration: "none" }}>
-        <Wordmark variant="dark" size={22} />
-      </a>
-      <nav style={{ display: "flex", alignItems: "center", gap: 36 }}>
-        {items.map(it => (
-          <a key={it.id} href={it.href} style={{
-            fontSize: 14, fontWeight: 500, letterSpacing: "0.02em",
-            color: active === it.id ? "var(--c42-orange)" : "var(--c42-forest-ink)",
-            textDecoration: "none", padding: "4px 0",
-            borderBottom: active === it.id ? "2px solid var(--c42-orange)" : "2px solid transparent",
-          }}>{it.label}</a>
-        ))}
-        <a href="#" className="c42-btn c42-btn--primary" style={{ padding: "8px 18px", minHeight: 34, fontSize: 12 }}>CONTACT SALES</a>
-      </nav>
-    </div>
-  );
-};
-
-Object.assign(window, { SITE_BASE, URLS, useIsMobile, ResponsivePage, DesktopFrame, SiteHeader, DESKTOP_MIN });
+Object.assign(window, { SITE_BASE, URLS, useIsMobile, ResponsivePage, DesktopFrame, DESKTOP_MIN });
